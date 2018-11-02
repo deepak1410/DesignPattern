@@ -6,7 +6,13 @@ class Singleton implements Serializable{
 	
 	private static Singleton instance = null;
 	private String name;
-	private Singleton(){}
+	private Singleton(){
+		/* This is to stop duplicate object creation using Reflection */
+		if(instance != null) {
+			throw IllegalStateException("Multiple instance creation not allowed.");
+		}
+	
+	}
 	
 	public static Singleton getInstance() {
 		
@@ -22,6 +28,13 @@ class Singleton implements Serializable{
 		
 	}
 	
+	/* This is to stop duplicate object creation using Object Cloning */
+	@Override
+	public Object clone() CloneNotSupportedException {
+		throw new CloneNotSupportedException();
+	}
+	
+	/* This is to stop duplicate object creation using Serialization */
 	public Object readResolve() {
 		return getInstance();
 	}
